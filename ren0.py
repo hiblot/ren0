@@ -5,6 +5,14 @@ import os.path
 listEntree = []
 listSortie = []
 
+# TODO apres :
+# Decouper chaque fichier pour verifier qu'il correspond a un certain
+#formalisme
+#si le fichie correspond a un certain formalisme
+# on compare les N groupes de la chaine de caractere : line 72
+
+
+
 # du cote verification, il y a autant de # que de parties à vérifier
 
 def listdirectory(path):
@@ -60,6 +68,9 @@ def decoupeFichier (nomduFichier):
 # ses parties correspondent à un formalisme présent dans la liste des formalismes recerhcés
 # en partant du dernier formalisme pour arriver au debut
 # si le fichier correspond alors on le transforme selon le formalisme defini
+
+# On teste chaque listEntree pour verifier si le fichier peut deja correspondre
+
     varYI= 0
     return varYI
 
@@ -69,13 +80,19 @@ def decoupeFormalisme (chainedeCaractere):
 # et la liste des elements sorties
     varYI= 0
 
-    print(chainedeCaractere.find('#'))
-    listEntree.append(chainedeCaractere[:chainedeCaractere.find('#')])
-   # listSortie.append
-    print(listEntree)
-    #print (listSortie)
-    return varYI
+    pos = 0
+    trigg = 0
+    while pos < len(chainedeCaractere):
+        if chainedeCaractere[pos] == '>':
+            trigg = pos
+        pos = pos + 1
 
+    print(trigg)
+    listEntree.append(chainedeCaractere[:trigg-1])
+    listSortie.append(chainedeCaractere[trigg+1:])
+    print(listEntree)
+    print(listSortie)
+    return varYI
 
 def listFormalismeDispo():
     varNbForm = 0
@@ -88,22 +105,10 @@ def listFormalismeDispo():
     file.close()
     # Itérer sur les lignes
     for line in lines:
-        print(line.strip())
+       # print(line.strip())
         decoupeFormalisme(line.strip())
         varNbForm += 1
-
-
-
     print(varNbForm)
-
-
-
-
-
-
-
-
-
 
 
 file = open('conf/rep.nhi', "r")
