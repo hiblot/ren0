@@ -81,6 +81,7 @@ def decoupeFichier (chainedeCaracte,chaineformalisme):
     trigg = 0
     nbForm = 0
     tFrSS = 0
+    varYI = 0
     listFormalismePresent = []
     listResultsFindForminChaine = []
 
@@ -101,29 +102,66 @@ def decoupeFichier (chainedeCaracte,chaineformalisme):
     print (trigg)
     print (nbForm)
     tFrSS = nbForm
+    indeXRT = 0
     # On va donc verifier qu'il est possible de faire nbForm parties avec la chaine de caracteres testee
     # selon le formalisme de chaque partie
 
 
     while tFrSS > 0 :
+        print ("listResultsFindForminChaine[tFrSS-1]" , listResultsFindForminChaine[tFrSS-1])
         # On decoupe correctement la chaine de caractere du formalisme
-        chercheandCompare(chainedeCaracte,listFormalismePresent[tFrSS - 1])
+        if listResultsFindForminChaine[tFrSS-1] != 0:
+            valeurdeRecherche = determinationValRecherche(listFormalismePresent[tFrSS - 1])
+            valeurTrouvee = chercheandCompare(chainedeCaracte,valeurdeRecherche)
+            if valeurTrouvee == "":
+                # La valeur n'a pas ete trouvee dans la chaine de caractere
+                listResultsFindForminChaine[tFrSS-1] = -1
+                varYI = -1
+                break
+            if valeurTrouvee != chainedeCaracte:
+                #On cherche ou se situe valeurTrouvee dans chaine de Caracte et on remplit par €
+                listResultsFindForminChaine[tFrSS-1] = 0
+
+            else :
+                # on a pas reussi a determiner suite au manque d'indice
+                # on continue avec la sequence suivante *
+                if listResultsFindForminChaine[tFrSS-1] == 42:
+                    # On passe dans l'etat en recherche mais on abandonne pas
+                    listResultsFindForminChaine[tFrSS-1] = 1
+                else :
+                    # En gros ce n'est pas la premiere fois que l'on cherche
+                    # On ne fait ce test que si la chaine contient deja des €
+
+                    valeurVacuum = chercheVacuum(chainedeCaracte,valeurdeRecherche)
+                    if valeurVacuum == "":
+                        # La valeur n'a pas ete trouvee dans la chaine de caractere
+                        listResultsFindForminChaine[tFrSS-1] = -1
+                        varYI = -1
+                        break
+                    if valeurVacuum != chainedeCaracte:
+                        # On cherche ou se situe valeurTrouvee dans chaine de Caracte et on remplit par €
+                        listResultsFindForminChaine[tFrSS-1] = 0
+                    else:
+                        indeXRT = indeXRT + 1
+
+                    if indeXRT > nbForm:
+                        listResultsFindForminChaine[tFrSS-1] = -1
+                        varYI = -1
+                        break
         tFrSS = tFrSS - 1
+        # Si besoin on reboucle
+        if 1 in listResultsFindForminChaine and tFrSS == 0:
+            tFrSS = nbForm
 
-
-    varYI= 0
     return varYI
 
-def chercheandCompare(chaineIn, boutdeformalisme):
-
-    varT= 0
+def determinationValRecherche(boutdeformalisme):
     chaineRecherchee = 0
 
-    #etat initial : 42
+    # etat initial : 42
     # etat chaine de caractere trouve : 0
     # etat hesitation : 1
     # etat Non trouvé : 100
-
 
     # doit prendre en compte les
     # $a$ : doit commencer par le caractere a
@@ -139,12 +177,11 @@ def chercheandCompare(chaineIn, boutdeformalisme):
     print("####################################")
 
     print("bout de formalisme : ", boutdeformalisme)
-  #  print("##############")
+    #  print("##############")
 
+    # determination du type
 
-    #determination du type
-
-    typerecherch = boutdeformalisme[boutdeformalisme.find('{')+1:boutdeformalisme.find('}')]
+    typerecherch = boutdeformalisme[boutdeformalisme.find('{') + 1:boutdeformalisme.find('}')]
     print("typerecherch : ", typerecherch)
 
     if typerecherch.startswith('a'):
@@ -154,50 +191,56 @@ def chercheandCompare(chaineIn, boutdeformalisme):
     if typerecherch.startswith('n'):
         chaineRecherchee = chaineRecherchee + 3
 
-    #determination du contenu
+    # determination du contenu
 
     contenurecherch = boutdeformalisme[:boutdeformalisme.find('{')]
     print("contenurecherch : ", contenurecherch)
 
-    if contenurecherch == "" :
+    if contenurecherch == "":
         chaineRecherchee = chaineRecherchee + 10
-    if contenurecherch == "~" :
+    if contenurecherch == "~":
         chaineRecherchee = chaineRecherchee + 20
-    if contenurecherch == "^" :
+    if contenurecherch == "^":
         chaineRecherchee = chaineRecherchee + 30
-    if contenurecherch == "~^" :
+    if contenurecherch == "~^":
         chaineRecherchee = chaineRecherchee + 40
 
-
-    #determination du debut ou de la fin
-    if boutdeformalisme.find('&') != -1 :
-        startwithrecher = boutdeformalisme[boutdeformalisme.find('&')+1:][:boutdeformalisme[boutdeformalisme.find('&')+1:].find('&')]
+    # determination du debut ou de la fin
+    if boutdeformalisme.find('&') != -1:
+        startwithrecher = boutdeformalisme[boutdeformalisme.find('&') + 1:][
+                          :boutdeformalisme[boutdeformalisme.find('&') + 1:].find('&')]
         print("startwithrecher : ", startwithrecher)
         chaineRecherchee = chaineRecherchee + 200
-    else :
+    else:
         chaineRecherchee = chaineRecherchee + 100
 
-    #determination du debut ou de la fin
-    if boutdeformalisme.find('£') != -1 :
-        endwithrecher = boutdeformalisme[boutdeformalisme.find('£') + 1:][:boutdeformalisme[boutdeformalisme.find('£') + 1:].find('£')]
+    # determination du debut ou de la fin
+    if boutdeformalisme.find('£') != -1:
+        endwithrecher = boutdeformalisme[boutdeformalisme.find('£') + 1:][
+                        :boutdeformalisme[boutdeformalisme.find('£') + 1:].find('£')]
         print("endwithrecher : ", endwithrecher)
         chaineRecherchee = chaineRecherchee + 2000
-    else :
+    else:
         chaineRecherchee = chaineRecherchee + 1000
 
-    #determination de la taille
-    # TODO : determination de la taille : du meme type que les 2 précédents
-    taillerecherch = boutdeformalisme[boutdeformalisme.find('(')+1:boutdeformalisme.find(')')]
-    print("taillerecherch : ", taillerecherch)
-
-    if boutdeformalisme.find('(') == -1 :
-        chaineRecherchee = chaineRecherchee + 10000
-    if boutdeformalisme.find(')') == -1 :
-        chaineRecherchee = chaineRecherchee + 10000
-    else:
+    # determination de la taille
+    if boutdeformalisme.find('(') != -1 and boutdeformalisme.find('(') != -1:
+        taillerecherch = boutdeformalisme[boutdeformalisme.find('(') + 1:boutdeformalisme.find(')')]
+        print("taillerecherch : ", taillerecherch)
         chaineRecherchee = chaineRecherchee + 20000
+    else:
+        chaineRecherchee = chaineRecherchee + 10000
 
-    print("chaineRecherchee global : ", chaineRecherchee)
+    print("chaineRecherchee globale : ", chaineRecherchee)
+
+    return chaineRecherchee
+
+
+
+def chercheandCompare(chaineIn, boutdeformalisme):
+
+    varT = 0
+
 
     return varT
 
@@ -251,14 +294,25 @@ file.close()
 # Itérer sur les lignes
 variaREP = line.strip()
 
-#listFormalismeDispo()
+listFormalismeDispo()
 
 
 for root, directories, files in os.walk(variaREP):
     for file in files:
+        for formalisme in listEntree:
+            mainEvent = decoupeFichier(file,formalisme)
+            print("file courrant ", file, "formalisme courant : ",formalisme)
+            if mainEvent == 0:
+                #renameLike(file,listSortie[formalisme.index])
+                print("mainEvent == 0")
+                break
         print(file)
+
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-decoupeFichier("[Test1]Foo.Test.2111.1980.Cop2 - Copie.txt", "~^{b0}&[&£]£#~^{b1}#{n0}&19&(4)#~^{b2}#{b3}&.&(4)#")
 
+# Le mainEvent
 
+#mainEvent = decoupeFichier("[Test1]Foo.Test.2111.1980.Cop2 - Copie.txt", "~^{b0}&[&£]£#~^{b1}#{n0}&19&(4)#~^{b2}#{b3}&.&(4)#")
+#si mainEvent vaut 0 c'est OK
+#si mainEvent vaut 1 c'est NOK
