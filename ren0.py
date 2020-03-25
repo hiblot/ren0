@@ -63,16 +63,146 @@ def renLikeSortie(chaineaRen, formalismeCorrespondant ) :
     varY = 0
     return varY
 
-def decoupeFichier (nomduFichier):
+
+
+
+
+def decoupeFichier (chainedeCaracte,chaineformalisme):
 # pour chague formalisme défini on verifie si le fichier et toutes
 # ses parties correspondent à un formalisme présent dans la liste des formalismes recerhcés
 # en partant du dernier formalisme pour arriver au debut
 # si le fichier correspond alors on le transforme selon le formalisme defini
-
 # On teste chaque listEntree pour verifier si le fichier peut deja correspondre
+
+# On cherche le nombre de parties du formalisme
+
+    pos = 0
+    lastpos = 0
+    trigg = 0
+    nbForm = 0
+    tFrSS = 0
+    listFormalismePresent = []
+    listResultsFindForminChaine = []
+
+    while pos < len(chaineformalisme):
+        if chaineformalisme[pos] == '#':
+            nbForm = nbForm + 1
+            trigg = pos
+            listFormalismePresent.append(chaineformalisme[lastpos:pos])
+            listResultsFindForminChaine.append("42")
+            lastpos = pos + 1
+        pos = pos + 1
+
+    print(listFormalismePresent)
+
+    # trigg : derniere position du # (normalement en derniere position)
+    # nbForm : nombre de chaines dans le formalisme
+
+    print (trigg)
+    print (nbForm)
+    tFrSS = nbForm
+    # On va donc verifier qu'il est possible de faire nbForm parties avec la chaine de caracteres testee
+    # selon le formalisme de chaque partie
+
+
+    while tFrSS > 0 :
+        # On decoupe correctement la chaine de caractere du formalisme
+        chercheandCompare(chainedeCaracte,listFormalismePresent[tFrSS - 1])
+        tFrSS = tFrSS - 1
+
 
     varYI= 0
     return varYI
+
+def chercheandCompare(chaineIn, boutdeformalisme):
+
+    varT= 0
+    chaineRecherchee = 0
+
+    #etat initial : 42
+    # etat chaine de caractere trouve : 0
+    # etat hesitation : 1
+    # etat Non trouvé : 100
+
+
+    # doit prendre en compte les
+    # $a$ : doit commencer par le caractere a
+    # £b£ : doit finir par le caractere b
+    # {a} : caracteres purement alpha
+    # {b} : caracteres alpha et numerique
+    # {n} : caracteres purement numerique
+    # les eventuels formalismes
+    # ^ : peut contenir des espaces
+    # ~ : peut contenir des points
+    # ~^ : peut contenir des points et des espaces
+    # (x) : doit contenir x caracteres
+
+    print("####################################")
+
+    print("bout de formalisme : ", boutdeformalisme)
+  #  print("##############")
+
+
+    #determination du type
+
+    typerecherch = boutdeformalisme[boutdeformalisme.find('{')+1:boutdeformalisme.find('}')]
+    print("typerecherch : ", typerecherch)
+
+    if typerecherch.startswith('a'):
+        chaineRecherchee = chaineRecherchee + 1
+    if typerecherch.startswith('b'):
+        chaineRecherchee = chaineRecherchee + 2
+    if typerecherch.startswith('n'):
+        chaineRecherchee = chaineRecherchee + 3
+
+    #determination du contenu
+
+    contenurecherch = boutdeformalisme[:boutdeformalisme.find('{')]
+    print("contenurecherch : ", contenurecherch)
+
+    if contenurecherch == "" :
+        chaineRecherchee = chaineRecherchee + 10
+    if contenurecherch == "~" :
+        chaineRecherchee = chaineRecherchee + 20
+    if contenurecherch == "^" :
+        chaineRecherchee = chaineRecherchee + 30
+    if contenurecherch == "~^" :
+        chaineRecherchee = chaineRecherchee + 40
+
+
+    #determination du debut ou de la fin
+    if boutdeformalisme.find('&') != -1 :
+        startwithrecher = boutdeformalisme[boutdeformalisme.find('&')+1:][:boutdeformalisme[boutdeformalisme.find('&')+1:].find('&')]
+        print("startwithrecher : ", startwithrecher)
+        chaineRecherchee = chaineRecherchee + 200
+    else :
+        chaineRecherchee = chaineRecherchee + 100
+
+    #determination du debut ou de la fin
+    if boutdeformalisme.find('£') != -1 :
+        endwithrecher = boutdeformalisme[boutdeformalisme.find('£') + 1:][:boutdeformalisme[boutdeformalisme.find('£') + 1:].find('£')]
+        print("endwithrecher : ", endwithrecher)
+        chaineRecherchee = chaineRecherchee + 2000
+    else :
+        chaineRecherchee = chaineRecherchee + 1000
+
+    #determination de la taille
+
+    taillerecherch = boutdeformalisme[boutdeformalisme.find('(')+1:boutdeformalisme.find(')')]
+    print("taillerecherch : ", taillerecherch)
+
+    if boutdeformalisme.find('(') == -1 :
+        chaineRecherchee = chaineRecherchee + 10000
+    if boutdeformalisme.find(')') == -1 :
+        chaineRecherchee = chaineRecherchee + 10000
+    else:
+        chaineRecherchee = chaineRecherchee + 20000
+
+    print("chaineRecherchee global : ", chaineRecherchee)
+
+    return varT
+
+
 
 def decoupeFormalisme (chainedeCaractere):
 #coupe la chaine formalisme
@@ -111,6 +241,8 @@ def listFormalismeDispo():
     print(varNbForm)
 
 
+
+
 file = open('conf/rep.nhi', "r")
 # utiliser readlines pour lire toutes les lignes du fichier
 # La variable "lignes" est une liste contenant toutes les lignes du fichier
@@ -120,12 +252,14 @@ file.close()
 # Itérer sur les lignes
 variaREP = line.strip()
 
-listFormalismeDispo()
+#listFormalismeDispo()
 
 
 for root, directories, files in os.walk(variaREP):
     for file in files:
         print(file)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
+decoupeFichier("[Test1]Foo.Test.2111.1980.Cop2 - Copie.txt", "~^{b0}&[&£]£#~^{b1}#{n0}&19&(4)#~^{b2}#{b3}&.&(4)#")
 
 
