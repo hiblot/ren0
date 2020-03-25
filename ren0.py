@@ -131,11 +131,10 @@ def chercheandCompare(chaineIn, boutdeformalisme):
     # {a} : caracteres purement alpha
     # {b} : caracteres alpha et numerique
     # {n} : caracteres purement numerique
-    # les eventuels formalismes
     # ^ : peut contenir des espaces
     # ~ : peut contenir des points
     # ~^ : peut contenir des points et des espaces
-    # (x) : doit contenir x caracteres
+    # (x) : doit contenir exactement x caracteres
 
     print("####################################")
 
@@ -187,7 +186,7 @@ def chercheandCompare(chaineIn, boutdeformalisme):
         chaineRecherchee = chaineRecherchee + 1000
 
     #determination de la taille
-
+    # TODO : determination de la taille : du meme type que les 2 précédents
     taillerecherch = boutdeformalisme[boutdeformalisme.find('(')+1:boutdeformalisme.find(')')]
     print("taillerecherch : ", taillerecherch)
 
