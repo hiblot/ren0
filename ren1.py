@@ -2,12 +2,10 @@ import os
 import glob
 import os.path
 
-
 listTentative = []
 listFilesBefore = []
 listFilesAfter = []
 listRename = []
-
 
 def listTargetRep():
     file = open('conf/rep.nhi', "r")
@@ -44,10 +42,61 @@ def datATr(fileNametoTr,indexGil):
     # Substring du dernier . pour l'extension
     # Substring entre date et position du dernier. pour l'extension
 
+    indexC = len(fileNametoTr)-1
+    print ("len(fileNametoTr) : " , len(fileNametoTr))
+    while indexC > 0:
+        if fileNametoTr[indexC] == '.':
+            posextension = indexC
+            print("valeur de posextention = ", posextension)
+            break
+        else:
+            indexC = indexC - 1
+
+    posdate19 = fileNametoTr.find('.19')
+    if posdate19 != -1:
+        if fileNametoTr[pos+1].isdigit() and fileNametoTr[pos+2].isdigit():
+            fileNametoTr = fileNametoTr[:posdate19] + fileNametoTr[posextension:]
+
+    posdate20 = fileNametoTr.find('.20')
+    if posdate20 != -1:
+        if fileNametoTr[pos+1].isdigit() and fileNametoTr[pos+2].isdigit():
+            fileNametoTr = fileNametoTr[:posdate20] + fileNametoTr[posextension:]
+
+    listFilesAfter[indexGil] = fileNametoTr
+    print(listFilesAfter)
+    print("~~~~~~~~~~~~~~~ STEP 3 ~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    # Etape 4 : chercher si le debut du fichier commence par () ou {} ou []
+    # Verifier  le pos + 1  si c'est un point si c'est un point on supprime egalement le point
+
+    if fileNametoTr.startswith('('):
+        poscar1 = fileNametoTr.find(')')
+        if poscar1 != -1:
+            if fileNametoTr[poscar1+1] == '.':
+                poscar1 = poscar1 + 2
+            fileNametoTr = fileNametoTr[poscar1:]
+
+    if fileNametoTr.startswith('['):
+        poscar2 = fileNametoTr.find(']')
+        if poscar2 != -1:
+            if fileNametoTr[poscar2+1] == '.':
+                poscar2 = poscar2 + 2
+            fileNametoTr = fileNametoTr[poscar2:]
+
+    if fileNametoTr.startswith('{'):
+        poscar3 = fileNametoTr.find('}')
+        if poscar3 != -1:
+            if fileNametoTr[poscar3+1] == '.':
+                poscar3 = poscar3 + 2
+            fileNametoTr = fileNametoTr[poscar3:]
+
+    listFilesAfter[indexGil] = fileNametoTr
+    print(listFilesAfter)
+    print("~~~~~~~~~~~~~~~ STEP 4 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
-
-
+    # Etape 5  : On renomme donc tous les fichiers de la listeAvant par les noms de la listeBefore
+    # Meme si ceux ci n'ont pas ete modifies par datATr
 
 
 def mainFunc():
