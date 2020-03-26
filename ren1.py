@@ -26,7 +26,7 @@ def datATr(fileNametoTr,indexGil):
     fileNametoTr = fileNametoTr.replace('_','.')
     listFilesAfter[indexGil] = fileNametoTr
     print(listFilesAfter)
-    print("~~~~~~~~~~~~~~~ STEP 1 ~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("~~~~~~~~~~~~~~~ EO STEP 1 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
     #Etape 2 : on remplace tous les n+1 points qui se suivent par un .
     pos = fileNametoTr.find('..')
@@ -36,35 +36,33 @@ def datATr(fileNametoTr,indexGil):
             pos = fileNametoTr.find('..')
     listFilesAfter[indexGil] = fileNametoTr
     print(listFilesAfter)
-    print("~~~~~~~~~~~~~~~ STEP 2 ~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("~~~~~~~~~~~~~~~ EO STEP 2 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
     # Etape 3 : chercher une date entre 2. commencant par 19 ou 20 en 4 chiffres
     # Substring du dernier . pour l'extension
     # Substring entre date et position du dernier. pour l'extension
 
     indexC = len(fileNametoTr)-1
-    print ("len(fileNametoTr) : " , len(fileNametoTr))
     while indexC > 0:
         if fileNametoTr[indexC] == '.':
             posextension = indexC
-            print("valeur de posextention = ", posextension)
             break
         else:
             indexC = indexC - 1
 
     posdate19 = fileNametoTr.find('.19')
     if posdate19 != -1:
-        if fileNametoTr[pos+1].isdigit() and fileNametoTr[pos+2].isdigit():
+        if fileNametoTr[posdate19+1].isdigit() and fileNametoTr[posdate19+2].isdigit():
             fileNametoTr = fileNametoTr[:posdate19] + fileNametoTr[posextension:]
 
     posdate20 = fileNametoTr.find('.20')
     if posdate20 != -1:
-        if fileNametoTr[pos+1].isdigit() and fileNametoTr[pos+2].isdigit():
+        if fileNametoTr[posdate20+1].isdigit() and fileNametoTr[posdate20+2].isdigit():
             fileNametoTr = fileNametoTr[:posdate20] + fileNametoTr[posextension:]
 
     listFilesAfter[indexGil] = fileNametoTr
     print(listFilesAfter)
-    print("~~~~~~~~~~~~~~~ STEP 3 ~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("~~~~~~~~~~~~~~~ EO STEP 3 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
     # Etape 4 : chercher si le debut du fichier commence par () ou {} ou []
     # Verifier  le pos + 1  si c'est un point si c'est un point on supprime egalement le point
@@ -92,7 +90,7 @@ def datATr(fileNametoTr,indexGil):
 
     listFilesAfter[indexGil] = fileNametoTr
     print(listFilesAfter)
-    print("~~~~~~~~~~~~~~~ STEP 4 ~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("~~~~~~~~~~~~~~~ EO STEP 4 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
     # Etape 5  : On renomme donc tous les fichiers de la listeAvant par les noms de la listeBefore
