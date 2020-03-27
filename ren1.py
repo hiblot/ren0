@@ -1,11 +1,8 @@
 import os
-import glob
 import os.path
 
-listTentative = []
 listFilesBefore = []
 listFilesAfter = []
-listRename = []
 
 def listTargetRep():
     file = open('conf/rep.nhi', "r")
@@ -25,8 +22,8 @@ def datATr(fileNametoTr,indexGil):
     fileNametoTr = fileNametoTr.replace('-','.')
     fileNametoTr = fileNametoTr.replace('_','.')
     listFilesAfter[indexGil] = fileNametoTr
-    print(listFilesAfter)
-    print("~~~~~~~~~~~~~~~ EO STEP 1 ~~~~~~~~~~~~~~~~~~~~~~~~")
+   # print(listFilesAfter)
+   # print("~~~~~~~~~~~~~~~ EO STEP 1 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
     #Etape 2 : on remplace tous les n+1 points qui se suivent par un .
     pos = fileNametoTr.find('..')
@@ -35,8 +32,8 @@ def datATr(fileNametoTr,indexGil):
             fileNametoTr = fileNametoTr[:pos] + fileNametoTr[pos+1:]
             pos = fileNametoTr.find('..')
     listFilesAfter[indexGil] = fileNametoTr
-    print(listFilesAfter)
-    print("~~~~~~~~~~~~~~~ EO STEP 2 ~~~~~~~~~~~~~~~~~~~~~~~~")
+   # print(listFilesAfter)
+   # print("~~~~~~~~~~~~~~~ EO STEP 2 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
     # Etape 3 : chercher une date entre 2. commencant par 19 ou 20 en 4 chiffres
     # Substring du dernier . pour l'extension
@@ -61,8 +58,8 @@ def datATr(fileNametoTr,indexGil):
             fileNametoTr = fileNametoTr[:posdate20] + fileNametoTr[posextension:]
 
     listFilesAfter[indexGil] = fileNametoTr
-    print(listFilesAfter)
-    print("~~~~~~~~~~~~~~~ EO STEP 3 ~~~~~~~~~~~~~~~~~~~~~~~~")
+  #  print(listFilesAfter)
+  #  print("~~~~~~~~~~~~~~~ EO STEP 3 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
     # Etape 4 : chercher si le debut du fichier commence par () ou {} ou []
     # Verifier  le pos + 1  si c'est un point si c'est un point on supprime egalement le point
@@ -89,9 +86,8 @@ def datATr(fileNametoTr,indexGil):
             fileNametoTr = fileNametoTr[poscar3:]
 
     listFilesAfter[indexGil] = fileNametoTr
-    print(listFilesAfter)
-    print("~~~~~~~~~~~~~~~ EO STEP 4 ~~~~~~~~~~~~~~~~~~~~~~~~")
-
+  #  print(listFilesAfter)
+  #  print("~~~~~~~~~~~~~~~ EO STEP 4 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
     # Etape 5  : On renomme donc tous les fichiers de la listeAvant par les noms de la listeBefore
     # Meme si ceux ci n'ont pas ete modifies par datATr
@@ -105,8 +101,10 @@ def mainFunc():
             listFilesBefore.append(file)
             listFilesAfter.append(file)
             datATr(listFilesAfter[indexFile],indexFile)
+            # RECUPERER LE PATH COMPLET DES FICHIERS
+            #os.rename(file, listFilesAfter[indexFile])
+            print("PATH : " ,os.path.abspath(file))
             indexFile = indexFile + 1
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print(listFilesBefore)
     print(listFilesAfter)
 
