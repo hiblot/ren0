@@ -47,7 +47,37 @@ def datATr(fileNametoTr,indexGil):
         if fileNametoTr[posdate19+1].isdigit() and fileNametoTr[posdate19+2].isdigit():
             fileNametoTr = fileNametoTr[:posdate19] + fileNametoTr[posextension:]
 
+    posdate19 = fileNametoTr.find('(19')
+    if posdate19 != -1:
+        if fileNametoTr[posdate19+1].isdigit() and fileNametoTr[posdate19+2].isdigit():
+            fileNametoTr = fileNametoTr[:posdate19] + fileNametoTr[posextension:]
+
+    posdate19 = fileNametoTr.find('[19')
+    if posdate19 != -1:
+        if fileNametoTr[posdate19+1].isdigit() and fileNametoTr[posdate19+2].isdigit():
+            fileNametoTr = fileNametoTr[:posdate19] + fileNametoTr[posextension:]
+
+    posdate19 = fileNametoTr.find('{19')
+    if posdate19 != -1:
+        if fileNametoTr[posdate19+1].isdigit() and fileNametoTr[posdate19+2].isdigit():
+            fileNametoTr = fileNametoTr[:posdate19] + fileNametoTr[posextension:]
+
     posdate20 = fileNametoTr.find('.20')
+    if posdate20 != -1:
+        if fileNametoTr[posdate20+1].isdigit() and fileNametoTr[posdate20+2].isdigit():
+            fileNametoTr = fileNametoTr[:posdate20] + fileNametoTr[posextension:]
+
+    posdate20 = fileNametoTr.find('[20')
+    if posdate20 != -1:
+        if fileNametoTr[posdate20+1].isdigit() and fileNametoTr[posdate20+2].isdigit():
+            fileNametoTr = fileNametoTr[:posdate20] + fileNametoTr[posextension:]
+
+    posdate20 = fileNametoTr.find('(20')
+    if posdate20 != -1:
+        if fileNametoTr[posdate20+1].isdigit() and fileNametoTr[posdate20+2].isdigit():
+            fileNametoTr = fileNametoTr[:posdate20] + fileNametoTr[posextension:]
+
+    posdate20 = fileNametoTr.find('{20')
     if posdate20 != -1:
         if fileNametoTr[posdate20+1].isdigit() and fileNametoTr[posdate20+2].isdigit():
             fileNametoTr = fileNametoTr[:posdate20] + fileNametoTr[posextension:]
@@ -112,5 +142,6 @@ def mainFunc():
     #print(listFilesBefore)
     #print(listFilesAfter)
     print ("ren1 Statement :  Finished : ", indexFileRename, " renamed Files  / ", indexFile, " Files")
+    print ("--()--")
 
 mainFunc()
