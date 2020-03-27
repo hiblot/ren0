@@ -92,6 +92,10 @@ def datATr(fileNametoTr,indexGil):
 
 
 def mainFunc():
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("-- ren1 v1.0 -- Rename Files smoothly -- March 2020  -- 2020 HIBLOT.COM --")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
     variaREP = listTargetRep()
     indexFile = 0
     indexFileRename = 0
@@ -106,8 +110,8 @@ def mainFunc():
                           '\\' + listFilesAfter[indexFile])
                 indexFileRename = indexFileRename + 1
             indexFile = indexFile + 1
-    print(listFilesBefore)
-    print(listFilesAfter)
-    print ("Finished : ", indexFileRename, " renamed Files  / ", indexFile, " Files")
+    #print(listFilesBefore)
+    #print(listFilesAfter)
+    print ("ren1 Statement :  Finished : ", indexFileRename, " renamed Files  / ", indexFile, " Files")
 
 mainFunc()
