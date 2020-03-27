@@ -105,9 +105,8 @@ def mainFunc():
             listFilesAfter.append(file)
             datATr(listFilesAfter[indexFile], indexFile)
             # On recupere le PATH general du fichier et on teste la nom presence du nouveau fichier
-            if os.path.exists((os.path.abspath(variaREP) + '\\' + listFilesAfter[indexFile]).strip()) == 0:
-                os.rename(os.path.abspath(variaREP) + '\\' + file, os.path.abspath(variaREP) +
-                          '\\' + listFilesAfter[indexFile])
+            if os.path.exists((os.path.abspath(variaREP) + '/' + listFilesAfter[indexFile]).strip()) == 0:
+                os.rename(os.path.abspath(variaREP) + '/' + file, os.path.abspath(variaREP) + '/' + listFilesAfter[indexFile])
                 indexFileRename = indexFileRename + 1
             indexFile = indexFile + 1
     #print(listFilesBefore)
