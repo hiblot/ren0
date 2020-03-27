@@ -6,17 +6,12 @@ listFilesAfter = []
 
 def listTargetRep():
     file = open('conf/rep.nhi', "r")
-    # utiliser readlines pour lire toutes les lignes du fichier
-    # La variable "lignes" est une liste contenant toutes les lignes du fichier
     line = file.readline()
-    # fermez le fichier après avoir lu les lignes
     file.close()
-    # Itérer sur les lignes
     variaREP = line.strip()
     return variaREP
 
 def datATr(fileNametoTr,indexGil):
-
     # Etape 1 : on remplace tous les caracteres d'espace, de - et de _ par des.
     fileNametoTr = fileNametoTr.replace(' ','.')
     fileNametoTr = fileNametoTr.replace('-','.')
@@ -69,6 +64,8 @@ def datATr(fileNametoTr,indexGil):
         if poscar1 != -1:
             if fileNametoTr[poscar1+1] == '.':
                 poscar1 = poscar1 + 2
+            else:
+                poscar1 = poscar1 + 1
             fileNametoTr = fileNametoTr[poscar1:]
 
     if fileNametoTr.startswith('['):
@@ -76,6 +73,8 @@ def datATr(fileNametoTr,indexGil):
         if poscar2 != -1:
             if fileNametoTr[poscar2+1] == '.':
                 poscar2 = poscar2 + 2
+            else:
+                poscar2 = poscar2 + 1
             fileNametoTr = fileNametoTr[poscar2:]
 
     if fileNametoTr.startswith('{'):
@@ -83,30 +82,32 @@ def datATr(fileNametoTr,indexGil):
         if poscar3 != -1:
             if fileNametoTr[poscar3+1] == '.':
                 poscar3 = poscar3 + 2
+            else:
+                poscar3 = poscar3 + 1
             fileNametoTr = fileNametoTr[poscar3:]
 
     listFilesAfter[indexGil] = fileNametoTr
   #  print(listFilesAfter)
   #  print("~~~~~~~~~~~~~~~ EO STEP 4 ~~~~~~~~~~~~~~~~~~~~~~~~")
 
-    # Etape 5  : On renomme donc tous les fichiers de la listeAvant par les noms de la listeBefore
-    # Meme si ceux ci n'ont pas ete modifies par datATr
-
 
 def mainFunc():
     variaREP = listTargetRep()
     indexFile = 0
+    indexFileRename = 0
     for root, directories, files in os.walk(variaREP):
         for file in files:
             listFilesBefore.append(file)
             listFilesAfter.append(file)
-            datATr(listFilesAfter[indexFile],indexFile)
-            # RECUPERER LE PATH COMPLET DES FICHIERS
-            #os.rename(file, listFilesAfter[indexFile])
-            print("PATH : " ,os.path.abspath(file))
+            datATr(listFilesAfter[indexFile], indexFile)
+            # On recupere le PATH general du fichier et on teste la nom presence du nouveau fichier
+            if os.path.exists((os.path.abspath(variaREP) + '\\' + listFilesAfter[indexFile]).strip()) == 0:
+                os.rename(os.path.abspath(variaREP) + '\\' + file, os.path.abspath(variaREP) +
+                          '\\' + listFilesAfter[indexFile])
+                indexFileRename = indexFileRename + 1
             indexFile = indexFile + 1
     print(listFilesBefore)
     print(listFilesAfter)
-
+    print ("Finished : ", indexFileRename, " renamed Files  / ", indexFile, " Files")
 
 mainFunc()
