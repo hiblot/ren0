@@ -93,7 +93,7 @@ def datATr(fileNametoTr,indexGil):
 
 def mainFunc():
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    print("-- ren1 v1.0 -- Rename Files smoothly -- March 2020  -- 2020 HIBLOT.COM --")
+    print("-- ren1 v1.1 -- Rename Files smoothly -- March 2020  -- 2020 HIBLOT.COM --")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     variaREP = listTargetRep()
